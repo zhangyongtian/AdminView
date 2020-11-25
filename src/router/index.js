@@ -29,4 +29,13 @@ const router = new VueRouter({
   routes
 })
 
+router.beforeEach((to,from,next)=>{
+	let remebermeadmin=window.localStorage.getItem("remebermeadmin");
+  if(to.path == '/'||remebermeadmin){
+    next();
+  }else{
+    alert('您还没有登录，请先登录');
+    next('/');
+  }
+})
 export default router

@@ -17,10 +17,10 @@
 							<el-input v-model="formLabelAlign.username" placeholder="输入你的用户名或者邮箱"></el-input>
 						</el-form-item>
 						<el-form-item  prop="password" label="input you passworld" style="position: relative; text-align: left;">
-							<span style="position: absolute;top: -50px;z-index: 9;right: 0px;"><a href="" style="text-decoration: none;">忘记密码？</a></span>
-							<el-input v-model="formLabelAlign.password" placeholder="输入你的密码"></el-input>
+							<!-- <span style="position: absolute;top: -50px;z-index: 9;right: 0px;"><a href="" style="text-decoration: none;" v-on:click.prevent="forgetpassword">忘记密码？</a></span>
+						 -->	<el-input v-model="formLabelAlign.password" placeholder="输入你的密码" show-password></el-input>
 						</el-form-item>
-						<el-button type="success" style="width: 100%;" @click="submitForm('ruleForm')">sign in</el-button>
+						<el-button type="success" style="width: 100%;" @click="submitForm('ruleForm')" :loading="loginload">sign in</el-button>
 					</el-form>
 				</el-card>
 			</div>
@@ -37,6 +37,7 @@
 </template>
 
 <script>
+	import {loginrequest} from '@/util/requestnetwork/loginrequest'
 	export default{
 		name:"login",
 		data(){
@@ -53,9 +54,10 @@
 					],
 					password:[
 						{ required: true, message: '请输入您的密码', trigger: 'blur' },
-						{ min: 10, max: 30, message: '请输入正确的长度（限制不能超过30个字符）', trigger: 'blur' }
+						{ min: 1, max: 30, message: '请输入正确的长度（限制不能超过30个字符）', trigger: 'blur' }
 					]
-				}
+				},
+				loginload:false
 			}
 		},
 		methods:{
@@ -65,12 +67,41 @@
 			submitForm(formName) {
 				this.$refs[formName].validate((valid) => {
 				if (valid) {
-					alert('submit!');
+					let user={};
+					user.username=this.formLabelAlign.username;
+					user.userpassword=this.formLabelAlign.password;
+					this.loginload=true;
+					let siginType=1;
+					if(this.formLabelAlign.username.length>10){
+						siginType=2;
+					}
+					user.siginType=siginType;
+					loginrequest(JSON.stringify(user))
+					.then(res=>{
+						 this.$message({
+						    message: '登录成功',
+						    type: 'success'
+						});
+						let loginuser=res.data.data.useryonghu;
+						let token=res.data.data.token;
+						//登录成功以后吧信息保存到本地
+						window.localStorage.setItem("remebermeadmin",JSON.stringify(loginuser));
+						window.localStorage.setItem("remembermetoken",token);
+						this.$store.dispatch("saveUser",loginuser)
+						this.loginload=false;
+						this.$router.push("/admin")
+					})
+					.catch(error=>{
+						this.loginload=false;
+					})
 				} else {
 					console.log('error submit!!');
 				return false;
 				}
 			});
+			},
+			forgetpassword(){
+				console.log("忘记密码");
 			}
 		}
 	}
