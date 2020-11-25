@@ -2,7 +2,7 @@
 	<div class="aside-menu">
 		    <el-radio-group v-model="isCollapse" style="margin-bottom: 20px;">
 		    </el-radio-group>
-		    <el-menu background-color="#545c64"
+		    <el-menu :router="true" background-color="#545c64"
 					text-color="#fff"
 					active-text-color="white" 
 					default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="showmenu">
@@ -12,8 +12,9 @@
 		          <span slot="title">首页</span>
 		        </template>
 		        <el-menu-item-group>
-		          <el-menu-item index="1-1">文章管理</el-menu-item>
-		          <el-menu-item index="1-2">用户管理</el-menu-item>
+		          <el-menu-item index="/admin">评论管理</el-menu-item>
+		          <el-menu-item index="/admin/aticle">文章管理</el-menu-item>
+				  <el-menu-item index="/admin/publicizeaticle">发布文章</el-menu-item>
 		        </el-menu-item-group>
 		      </el-submenu>
 		    </el-menu>

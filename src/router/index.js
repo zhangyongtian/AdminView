@@ -17,7 +17,17 @@ const routes = [
 			{
 				path:"",
 				name:"useradmin",
-				component:()=>import('@/components/UserAdmin/UserAdmin.vue'),
+				component:()=>import('@/components/CommentAdmin/CommentAdmin.vue'),
+			},
+			{
+				path:"aticle",
+				name:"aticle",
+				component:()=>import('@/components/Aticleadmin/Aticleadmin.vue'),
+			},
+			{
+				path:"publicizeaticle",
+				name:"publicizeaticle",
+				component:()=>import('@/components/publicizeaticle/publicizeaticle.vue'),
 			}
 		]
 	}
