@@ -1,10 +1,13 @@
 <template>
 	<div>
 		<el-upload
-		  action="https://jsonplaceholder.typicode.com/posts/"
+		  action="http://localhost:8089/rememberme/uploadFile"
 		  list-type="picture-card"
 		  :on-preview="handlePictureCardPreview"
-		  :on-remove="handleRemove">
+		  :on-remove="handleRemove"
+			name="img"
+			:on-success="successUpload"
+			:limit="1">
 		  <i class="el-icon-plus"></i>
 		</el-upload>
 		<el-dialog :visible.sync="dialogVisible">
@@ -28,7 +31,10 @@
           handlePictureCardPreview(file) {
             this.dialogImageUrl = file.url;
             this.dialogVisible = true;
-          }
+          },
+					successUpload(res){
+						this.$emit("getheadimg",res.data);
+					}
         }
   }
 </script>

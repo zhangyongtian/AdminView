@@ -78,6 +78,7 @@
 					user.siginType=siginType;
 					loginrequest(JSON.stringify(user))
 					.then(res=>{
+						console.log(res)
 						 this.$message({
 						    message: '登录成功',
 						    type: 'success'

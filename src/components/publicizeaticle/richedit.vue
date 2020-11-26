@@ -49,7 +49,7 @@ import {
   FontType,
   FontSize
 } from 'element-tiptap';
-
+import {uploadFileRequest} from '@/util/requestnetwork/uploadFileRequest'
 export default {
   data () {
       // 编辑器的 extensions
@@ -66,7 +66,15 @@ export default {
           new Strike(),
           new Underline(),
           new Link(),
-          new Image(),
+          new Image({
+						uploadRequest(file){
+							const fd=new FormData();
+							fd.append("img",file);
+							return uploadFileRequest(fd).then(res=>{
+								return res.data.data;
+							})
+						}
+					}),
           new CodeBlock(),
           new Blockquote(),
           new ListItem(),
@@ -104,7 +112,12 @@ export default {
     },
   components:{
 	 'el-tiptap': ElementTiptap,
-  }
+  },
+	watch:{
+		content:function(){
+			this.$emit("richdietcontenchange",this.content)
+		}
+	}
 }
 </script>
 <style>
