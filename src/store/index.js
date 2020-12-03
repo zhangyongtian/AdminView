@@ -5,7 +5,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-	  user:JSON.parse(window.localStorage.getItem("remebermeadmin"))||{}
+	  user:JSON.parse(window.localStorage.getItem("remebermeadmin"))||{},
+	  blogdetail:"aa"
   },
   mutations: {
 	  saveUser(state,adminuser){
@@ -13,6 +14,12 @@ export default new Vuex.Store({
 	  },
 	  deleteUser(state){
 		 state.user={}
+	  },
+	  saveblogdetail(state,blogdetail){
+		  state.blogdetail=blogdetail;
+	  },
+	  deletesaveblogdetail(state){
+		  state.blogdetail="";
 	  }
   },
   actions: {
@@ -21,6 +28,12 @@ export default new Vuex.Store({
 	  },
 	  deleteUser(content){
 		  content.commit("deleteUser")
+	  },
+	  saveblogdetail(content,blogdetail){
+		  content.commit("saveblogdetail",blogdetail);
+	  },
+	  deletesaveblogdetail(content){
+		  content.commit("deletesaveblogdetail")
 	  }
   },
   modules: {

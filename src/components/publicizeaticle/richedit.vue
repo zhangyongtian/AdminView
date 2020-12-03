@@ -104,8 +104,7 @@ export default {
         ],
         // 编辑器的内容
         content: `
-          <h1>Heading</h1>
-          <p>This Editor is awesome!</p>
+          <h1>开始吧</h1>
         `,
 		lang:""
       };
@@ -115,9 +114,10 @@ export default {
   },
 	watch:{
 		content:function(){
-			this.$emit("richdietcontenchange",this.content)
+				this.$emit("richdietcontenchange",this.content)
+			}
 		}
-	}
+	
 }
 </script>
 <style>

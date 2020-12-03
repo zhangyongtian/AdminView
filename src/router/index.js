@@ -28,6 +28,11 @@ const routes = [
 				path:"publicizeaticle",
 				name:"publicizeaticle",
 				component:()=>import('@/components/publicizeaticle/publicizeaticle.vue'),
+			},
+			{
+				path:"blogedit/:blogid",
+				name:"blogedit",
+				component:()=>import('@/components/Aticleadmin/blogedit.vue'),
 			}
 		]
 	}

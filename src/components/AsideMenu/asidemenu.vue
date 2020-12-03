@@ -15,6 +15,8 @@
 		          <el-menu-item index="/admin">评论管理</el-menu-item>
 		          <el-menu-item index="/admin/aticle">文章管理</el-menu-item>
 				  <el-menu-item index="/admin/publicizeaticle">发布文章</el-menu-item>
+					<el-menu-item index="">发留言</el-menu-item>
+					<el-menu-item index="">留言管理</el-menu-item>
 		        </el-menu-item-group>
 		      </el-submenu>
 		    </el-menu>

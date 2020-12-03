@@ -38,7 +38,7 @@
 		  <el-form-item label="文章内容" prop="content">
 				
 				<!-- 把文本框的内容全部给父组件处理 -->
-		   <richeditt v-on:richdietcontenchange="richcontetchange"></richeditt>
+		   <richeditt v-on:richdietcontenchange="richcontetchange" ></richeditt>
 		  </el-form-item>
 		  <el-form-item>
 		    <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
