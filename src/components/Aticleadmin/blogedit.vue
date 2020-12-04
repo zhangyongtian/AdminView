@@ -4,12 +4,16 @@
 			title="修改图片"
 			:visible.sync="dialogVisible"
 			width="30%"
+			@opened="dialogOpen"
 			>
-			<img :src="preimage" alt="" style="width: 200px;height: 200px;">
+			<div>
+				<img :src="preimage" alt="" style="display: block;max-width: 100%;" ref="digimg">
+			</div>
+			
 			<span>这是一段信息</span>
 			<span slot="footer" class="dialog-footer">
 				<el-button @click="dialogVisible = false">取 消</el-button>
-				<el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+				<el-button type="primary" @click="commitimg">确 定</el-button>
 			</span>
 		</el-dialog>
 		<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
@@ -19,7 +23,9 @@
 		  <el-form-item label="首图一张图片">
 				<!-- 把得到的图片的URL传递给父组件 -->
 		    <!-- <upload v-on:getheadimg="gethimg"></upload> -->
-			<img :src="ruleForm.headimg" alt="">
+				<div style="text-align: center;">
+					<img :src="ruleForm.headimg" alt="" style="max-width: 100%;">
+				</div>
 			<input type="file" hidden="hidden" id="file1" @change="filechange" ref="file">
 			<label for="file1">点击修改图片</label>
 		  </el-form-item>
@@ -64,7 +70,8 @@
 </template>
 
 <script>
-	
+	import 'cropperjs/dist/cropper.css';
+	import Cropper from 'cropperjs';
 	import upload from '@/components/publicizeaticle/upload.vue'
 	import richeditt from '@/components/publicizeaticle/richedit.vue'
 	import {getAllBlogTags} from '@/util/requestnetwork/getAllBlogTags'
@@ -72,7 +79,7 @@
 	import {saveBlog} from '@/util/requestnetwork/saveBlog'
 	import {getBlogbyId} from '@/util/requestnetwork/blogrequest'
 	import {updateblog} from '@/util/requestnetwork/blogrequest'
-	
+	import {uploadFileRequest} from '@/util/requestnetwork/uploadFileRequest'
 	export default{
 		name:"publicizeaticlefrom",
 		components:{
@@ -82,6 +89,9 @@
 		data() {
 		      return {
 				  dialogVisible:false,
+				  //这个是图像处理的那个duixian
+				  
+				  croppper:null,
 				  // 预览的图片
 				  preimage:"",
 						blogtags:[],
@@ -173,6 +183,40 @@
 						const file=this.$refs.file;
 						this.preimage=window.URL.createObjectURL(file.files[0]);
 						this.$refs.file.value=''
+					},
+					dialogOpen(){
+						console.log("出来了")
+						if(this.croppper!=null){
+							this.croppper.replace(this.preimage);
+							return;
+						}
+						const image = this.$refs.digimg;
+						this.croppper= new Cropper(image, {
+						aspectRatio: 1,
+						viewMode:1,
+						dragMode: "none",
+						cropBoxResizable:true,
+						cropBoxMovable:true
+					});
+					console.log("=========");
+					console.log(cropper)
+					},
+					commitimg(){
+						// this.dialogVisible=false;
+						this.croppper.getCroppedCanvas().toBlob((file) => {
+							// 这里上传的时候因为没有名字,所以手动的添加文件的名字
+							let filename=Math.random()+".png";
+							const formData = new FormData();
+							formData.append("img",file,filename);
+							uploadFileRequest(formData).then(res=>{
+								let resultimg=res.data.data;
+								this.ruleForm.headimg=resultimg;
+								this.dialogVisible=false;
+							}).catch(error=>{
+								
+							})
+							})
+						
 					}
 		    },
 				created(){

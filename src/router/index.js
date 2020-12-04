@@ -33,6 +33,22 @@ const routes = [
 				path:"blogedit/:blogid",
 				name:"blogedit",
 				component:()=>import('@/components/Aticleadmin/blogedit.vue'),
+			},
+			{
+				path:"userdetail/:userid",
+				name:"userdetail",
+				component:()=>import('@/components/userdetail/userdetail.vue'),
+			},
+			{
+				path:"usermessage",
+				name:"usermessage",
+				component:()=>import('@/components/usermessage/messagevue.vue'),
+			}
+			,
+			{
+				path:"messageadmin",
+				name:"messageadmin",
+				component:()=>import('@/components/usermessage/messageadmin.vue'),
 			}
 		]
 	}

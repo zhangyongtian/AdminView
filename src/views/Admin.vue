@@ -35,11 +35,10 @@
 								</div>
 							</el-dropdown-item>
 						    <el-dropdown-item>
-								<div  v-on:click="nihao">
-									修改信息富士达
+								<div  v-on:click="userdetail">
+									详细信息
 								</div>
 							</el-dropdown-item>
-						    <el-dropdown-item>详细信息</el-dropdown-item>
 						    <el-dropdown-item>
 								<div v-on:click="loginout">
 									退出登录
@@ -67,9 +66,10 @@
 			showmenu(){
 				this.isCollapse=!this.isCollapse
 			},
-			nihao(){
-				console.log("点击了")
-				console.log(this.$store.state.user)
+			userdetail(){
+				let user=this.$store.state.user;
+				console.log(user)
+				this.$router.push({path:`/admin/userdetail/${user.id}`})
 			},
 			loginout(){
 				window.localStorage.removeItem("remebermeadmin");

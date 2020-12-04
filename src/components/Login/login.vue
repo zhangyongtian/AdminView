@@ -50,7 +50,7 @@
 				rules:{
 					username:[
 						{ required: true, message: '请输入您的用户名', trigger: 'blur' },
-						{ min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }	
+						{ min: 3, max: 30, message: '长度在 3 到 30 个字符', trigger: 'blur' }	
 					],
 					password:[
 						{ required: true, message: '请输入您的密码', trigger: 'blur' },
