@@ -50,6 +50,32 @@ const routes = [
 				name:"messageadmin",
 				component:()=>import('@/components/usermessage/messageadmin.vue'),
 			}
+			,
+			{
+				path:"photoupload",
+				name:"photoupload",
+				component:()=>import('@/components/Photo/updatePhoto.vue'),
+			},
+			{
+				path:"photoadmin",
+				name:"photoadmin",
+				component:()=>import('@/components/Photo/PhotoAdmin.vue'),
+			},
+			{
+				path:"updatephoto/:photoid",
+				name:"updatephoto",
+				component:()=>import('@/components/Photo/photoupdate.vue'),
+			},
+			{
+				path:"classfiyadmin",
+				name:"classfiyadmin",
+				component:()=>import('@/components/classfiyadmin/classfiyadmin.vue'),
+			},
+			{
+				path:"tagsadmin",
+				name:"tagsadmin",
+				component:()=>import('@/components/tagsadmin/tagsadmin.vue'),
+			}
 		]
 	}
 ]
