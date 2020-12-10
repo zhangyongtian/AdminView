@@ -75,6 +75,26 @@ const routes = [
 				path:"tagsadmin",
 				name:"tagsadmin",
 				component:()=>import('@/components/tagsadmin/tagsadmin.vue'),
+			},
+			{
+				path:"commentadmin",
+				name:"commentadmin",
+				component:()=>import('@/components/usercommentadmin/commentadmin.vue'),
+			},
+			{
+				path:"useraticle",
+				name:"useraticle",
+				component:()=>import('@/components/useraticleadmin/useraticle.vue'),
+			},
+			{
+				path:"useradmin",
+				name:"useradmin",
+				component:()=>import('@/components/Useradmin/useradmin.vue'),
+			},
+			{
+				path:"setUserRole/:userId",
+				name:"setUserRole",
+				component:()=>import('@/components/Useradmin/setUserRole.vue'),
 			}
 		]
 	}
