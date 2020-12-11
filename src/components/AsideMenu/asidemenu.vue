@@ -21,7 +21,7 @@
 		        </el-menu-item-group>
 		      </el-submenu>
 			  <!-- 下面是超级管理员的 -->
-			  <el-submenu index="2">
+			  <el-submenu index="2" v-if="showAdmin">
 			    <template slot="title">
 			      <i class="el-icon-user-solid"></i>
 			      <span slot="title">超级管理员</span>
@@ -45,7 +45,9 @@
 		name:"asidemenu",
 		data() {
 		      return {
-		        isCollapse:this.showmenu
+		        isCollapse:this.showmenu,
+						// 是否显示超级管理员的页面
+						showAdmin:false
 		      };
 		    },
 		    methods: {
@@ -60,6 +62,12 @@
 		showmenu:{
 			default:true,
 			type:Boolean
+		}
+	},
+	created() {
+		let user=this.$store.state.user;
+		if(user.roles.length>1){
+			this.showAdmin=true;
 		}
 	}
 	}
