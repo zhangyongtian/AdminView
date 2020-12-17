@@ -139,6 +139,7 @@
 					// 获得富文本框的内容
 					richcontetchange(content){
 						this.ruleForm.content=content;
+						console.log(content)
 					},
 					//获得首图的地址
 					gethimg(headimg){

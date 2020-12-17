@@ -80,6 +80,12 @@
 	import {getBlogbyId} from '@/util/requestnetwork/blogrequest'
 	import {updateblog} from '@/util/requestnetwork/blogrequest'
 	import {uploadFileRequest} from '@/util/requestnetwork/uploadFileRequest'
+	
+	// 使用oss
+	import {alibabafilerequestimp} from '@/util/requestnetwork/ossRequestFileToAli'
+	import {filegetprotiy} from '@/util/requestnetwork/ossRequestFileToAli'
+	
+	// 下面换成oss
 	export default{
 		name:"publicizeaticlefrom",
 		components:{
@@ -202,19 +208,63 @@
 					console.log(cropper)
 					},
 					commitimg(){
+						
+						// this.dialogVisible=false;
+						const fd=new FormData();
+						// //这里改成oss的
+						let url="";
+						 let policy={};
+						 function getUUID () {
+						   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+						     return (c === 'x' ? (Math.random() * 16 | 0) : ('r&0x3' | '0x8')).toString(16)
+						   })
+						 }
 						// this.dialogVisible=false;
 						this.croppper.getCroppedCanvas().toBlob((file) => {
 							// 这里上传的时候因为没有名字,所以手动的添加文件的名字
 							let filename=Math.random()+".png";
-							const formData = new FormData();
-							formData.append("img",file,filename);
-							uploadFileRequest(formData).then(res=>{
-								let resultimg=res.data.data;
-								this.ruleForm.headimg=resultimg;
-								this.dialogVisible=false;
-							}).catch(error=>{
-								
-							})
+							
+							filegetprotiy().then(response=>{
+												policy.policy = response.data.policy;
+												policy.signature = response.data.signature;
+												policy.ossaccessKeyId = response.data.accessid;
+												policy.key = response.data.dir +getUUID()+'_${filename}';
+												policy.dir = response.data.dir;
+												policy.host = response.data.host;
+												// _self.dataObj.policy = response.data.policy;
+												// _self.dataObj.signature = response.data.signature;
+												// _self.dataObj.ossaccessKeyId = response.data.accessid;
+												// _self.dataObj.key = response.data.dir +this.getUUID()+'_${filename}';
+												// _self.dataObj.dir = response.data.dir;
+												// _self.dataObj.host = response.data.host;
+												fd.append("policy",policy.policy);
+												fd.append("signature",policy.signature);
+												fd.append("key",policy.key);
+												fd.append("ossaccessKeyId",policy.ossaccessKeyId);
+												fd.append("dir",policy.dir);
+												fd.append("host",policy.host);
+												fd.append("file",file,filename);
+												
+											  alibabafilerequestimp(fd).then(res=>{
+													url=policy.host + '/' + policy.key.replace("${filename}",filename);
+														this.ruleForm.headimg=url;
+														this.dialogVisible=false;
+												})
+												
+											})
+							
+							
+							// 
+							// let filename=Math.random()+".png";
+							// const formData = new FormData();
+							// formData.append("img",file,filename);
+							// uploadFileRequest(formData).then(res=>{
+							// 	let resultimg=res.data.data;
+							// 	this.ruleForm.headimg=resultimg;
+							// 	this.dialogVisible=false;
+							// }).catch(error=>{
+							// 	
+							// })
 							})
 						
 					}
@@ -236,9 +286,7 @@
 					// 这里获取传过来的id查询blog
 					let blog={};
 					blog.id=this.$route.params.blogid;
-					console.log(blog)
 					getBlogbyId(JSON.stringify(blog)).then(res=>{
-						console.log(res)
 						let data=res.data.data;
 						// 这里的分类要重新获得
 						// 还有标签要获取全部

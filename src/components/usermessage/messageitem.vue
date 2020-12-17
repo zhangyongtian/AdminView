@@ -6,7 +6,7 @@
 					<span>{{message.message}}</span>
 				</div>
 				<div class="message_create">
-					{{message.createtime}}
+					{{message.createtime|dateFilter}}
 				</div>
 				<div class="message_c">
 					<el-button type="danger" icon="el-icon-delete" circle @click="deleteblog(message.id,index)"></el-button>
@@ -36,6 +36,12 @@
 				this.$emit("deletemessageitem",messageid,index);
 			}
 		},
+		filters:{
+			dateFilter(item){
+				let pointFlag=item.indexOf(".");
+				return item.substring(0,pointFlag).replace("T","  ");
+			}
+		}
 	}
 </script>
 

@@ -26,7 +26,7 @@
 					</template>
 				</div>
 				<div>
-					<el-tag style="margin-left: 5px;" type="success">{{blog.createtime}}</el-tag>
+					<el-tag style="margin-left: 5px;" type="success">{{blog.createtime|dateFilter}}</el-tag>
 				</div>
 				<div style="margin-left: 10px;">
 					<el-button type="primary" icon="el-icon-edit" circle @click="updateblog(blog.id)"></el-button>
@@ -70,8 +70,13 @@
 		filters: {
 			isfabu: function(value) {
 				return value?"是":"否";
+			},
+			dateFilter(item){
+				let pointFlag=item.indexOf(".");
+				return item.substring(0,pointFlag).replace("T","  ");
 			}
 		}
+		
   }
 </script>
 <style lang="less">

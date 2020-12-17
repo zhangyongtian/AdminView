@@ -5,7 +5,7 @@
 				<!-- 我是显示的部分 -->
 				<div class="comment-content_t">
 					<span>{{comment.comment}}</span>
-					<span>{{comment.createtime}}</span>
+					<span>{{comment.createtime|dateFilter}}</span>
 				</div>
 				<!-- 这里是操作的部分 -->
 				<div class="comment-content_b">
@@ -39,6 +39,12 @@
 		},
 		created(){
 			
+		},
+		filters:{
+			dateFilter(item){
+				let pointFlag=item.indexOf(".");
+				return item.substring(0,pointFlag).replace("T","  ");
+			}
 		}
 	}
 </script>

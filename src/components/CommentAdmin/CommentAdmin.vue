@@ -226,6 +226,12 @@
 			this.getComments(this.currentPage4,this.pagesize,user);
 			//下面是获取子评论的信息
 			this.getsonComments(this.currentPage4,this.pagesize,user);
+		},
+		filters:{
+			dateFilter(item){
+				let pointFlag=item.indexOf(".");
+				return item.substring(0,pointFlag).replace("T","  ");
+			}
 		}
   }
 </script>

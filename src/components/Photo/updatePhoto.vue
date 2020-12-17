@@ -9,11 +9,12 @@
 		<el-upload
 		class="upload-demo"
 		drag
-		action="http://localhost:8089/rememberme/uploadFile"
-		multiple
-		:on-success="sucessupload"
+		action="https://huabei5zhanh.oss-cn-huhehaote.aliyuncs.com"
+		:data="dataObj"
+		:multiple="false"
+		:on-success="successUpload"
+		:before-upload="beforeUpload"
 		:on-error="errorupload"
-		name="img"
 		:on-change="filechange"
 		:file-list="fileList">
 		<i class="el-icon-upload"></i>
@@ -40,16 +41,19 @@
 
 <script>
 	import {savephoto} from "@/util/requestnetwork/adminrequest"
-	
+	import {ossfileupload} from "@/util/requestnetwork/OssFileUpload"
 	
 	 export default{
 		 name:"fileupload",
 		 methods: {
-		 	sucessupload(res, file, fileList) {
-		 		this.imgs.push(res.data);
+		 	successUpload(res, file, fileList) {
+				this.fileList.pop();
+				this.fileList.push({name: file.name, url: this.dataObj.host + '/' + this.dataObj.key.replace("${filename}",file.name) });
+				console.log("最后的文件地址是"+this.fileList[0].url)
+		 		this.imgs.push(this.fileList[0].url);
 				//这里就是图片上传成功了
 				let photo={};
-				photo.photosurl=res.data;
+				photo.photosurl=this.fileList[0].url;
 				savephoto(JSON.stringify(photo)).then(res=>{
 					console.log(res)
 				}).catch(error=>{
@@ -60,14 +64,51 @@
 				
 			},
 			filechange(file,filelist){
+			},
+			beforeUpload(file) {
+			  let _self = this;
+			  return new Promise((resolve,reject)=>{
+				  ossfileupload().then(response=>{
+				  			  console.log("紫红色哥是")
+				  			  console.log(response.data)
+				  			  _self.dataObj.policy = response.data.policy;
+				  			  _self.dataObj.signature = response.data.signature;
+				  			  _self.dataObj.ossaccessKeyId = response.data.accessid;
+				  			  _self.dataObj.key = response.data.dir +this.getUUID()+'_${filename}';
+				  			  _self.dataObj.dir = response.data.dir;
+				  			  _self.dataObj.host = response.data.host;
+						resolve(true)
+				  }).catch(error=>{
+				  		reject(false)	  
+				  })
+			  })
+			  
+			},
+			getUUID () {
+			  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+			    return (c === 'x' ? (Math.random() * 16 | 0) : ('r&0x3' | '0x8')).toString(16)
+			  })
 			}
 		 },
 		 data() {
 		 	return {
-		 		fileList:[],
-				imgs:[]
+				imgs:[],
+				dataObj: {
+				  policy: '',
+				  signature: '',
+				  key: '',
+				  ossaccessKeyId: '',
+				  dir: '',
+				  host: '',
+				  // callback:'',
+				}
 		 	}
 		 },
+		 computed:{
+		 	fileList() {
+		 	  return []
+		 	}
+		 }
 	 }
 </script>
 

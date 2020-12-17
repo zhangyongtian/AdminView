@@ -41,6 +41,10 @@
 	import {getPhotoById} from "@/util/requestnetwork/adminrequest"
 	
 	import Cropper from 'cropperjs';
+	
+		// 使用oss
+	import {alibabafilerequestimp} from '@/util/requestnetwork/ossRequestFileToAli'
+	import {filegetprotiy} from '@/util/requestnetwork/ossRequestFileToAli'
 	export default{
 		name:"photoupdate",
 		data() {
@@ -76,38 +80,86 @@
 				// this.dialogVisible=false;
 
 			this.cropper.getCroppedCanvas().toBlob((file) => {
+				
+			const fd=new FormData();
+			// //这里改成oss的
+			let url="";
+			 let policy={};
+			 function getUUID () {
+			   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+			     return (c === 'x' ? (Math.random() * 16 | 0) : ('r&0x3' | '0x8')).toString(16)
+			   })
+			 }
+				
+				
 
 // 这里上传的时候因为没有名字,所以手动的添加文件的名字
 
 			let filename=Math.random()+".png";
+			
+			filegetprotiy().then(response=>{
+								policy.policy = response.data.policy;
+								policy.signature = response.data.signature;
+								policy.ossaccessKeyId = response.data.accessid;
+								policy.key = response.data.dir +getUUID()+'_${filename}';
+								policy.dir = response.data.dir;
+								policy.host = response.data.host;
+								// _self.dataObj.policy = response.data.policy;
+								// _self.dataObj.signature = response.data.signature;
+								// _self.dataObj.ossaccessKeyId = response.data.accessid;
+								// _self.dataObj.key = response.data.dir +this.getUUID()+'_${filename}';
+								// _self.dataObj.dir = response.data.dir;
+								// _self.dataObj.host = response.data.host;
+								fd.append("policy",policy.policy);
+								fd.append("signature",policy.signature);
+								fd.append("key",policy.key);
+								fd.append("ossaccessKeyId",policy.ossaccessKeyId);
+								fd.append("dir",policy.dir);
+								fd.append("host",policy.host);
+								fd.append("file",file,filename);
+								
+							  alibabafilerequestimp(fd).then(res=>{
+									url=policy.host + '/' + policy.key.replace("${filename}",filename);
+												this.photo.imgurl=url;
+												let img={};
+												img.imgurl=this.photo.imgurl;
+												img.id=this.photo.id;
+												updatePhotoById(JSON.stringify(img)).then(res=>{
+													this.dialogVisible=false;
+													 this.$message({
+													message: '恭喜你，修改成功',
+													type: 'success'
+													});
+												}).catch(error=>{
+													
+												})
+									this.dialogVisible=false;
+								})
+								
+							})
+			
 
-			const formData = new FormData();
-
-			formData.append("img",file,filename);
-
-			uploadFileRequest(formData).then(res=>{
-
-			let resultimg=res.data.data;
-			this.photo.imgurl=resultimg;
-			let img={};
-			img.imgurl=this.photo.imgurl;
-			img.id=this.photo.id;
-			console.log("+++++++")
-			console.log(updatePhotoById)
-			updatePhotoById(JSON.stringify(img)).then(res=>{
-				this.dialogVisible=false;
-				console.log(res);
-				console.log("++++++++++++++")
-				 this.$message({
-				message: '恭喜你，修改成功',
-				type: 'success'
-				});
-			}).catch(error=>{
-				
-			})
-			}).catch(error=>{
-
-			})
+// 			uploadFileRequest(formData).then(res=>{
+// 
+// 			let resultimg=res.data.data;
+// 			this.photo.imgurl=resultimg;
+// 			let img={};
+// 			img.imgurl=this.photo.imgurl;
+// 			img.id=this.photo.id;
+// 			updatePhotoById(JSON.stringify(img)).then(res=>{
+// 				this.dialogVisible=false;
+// 				 this.$message({
+// 				message: '恭喜你，修改成功',
+// 				type: 'success'
+// 				});
+// 			}).catch(error=>{
+// 				
+// 			})
+// 			}).catch(error=>{
+// 
+// 			})
+			
+			//这里是截止的地方
 			})}
 			},
 			created(){
