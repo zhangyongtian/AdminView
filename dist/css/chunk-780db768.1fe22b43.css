@@ -1,0 +1,1 @@
+.userItem{display:flex}.userItem .userContent{flex:1;display:flex;justify-content:center;align-items:center}.userItem .userContent>img{width:50px;height:50px;border-radius:50%}.userItem .usercreatime,.userItem .useroprate,.userItem .userrole{flex:1;display:flex;justify-content:center;align-items:center}

@@ -34,6 +34,7 @@
 <script>
 	import {selectPagePhoto} from "@/util/requestnetwork/adminrequest"
 	import {deletePhotoById} from "@/util/requestnetwork/adminrequest"
+	import { Loading } from 'element-ui';
 	
 	import photoitem from "@/components/Photo/photoitem"
 	export default{
@@ -51,13 +52,14 @@
 				this.selectpageimg(this.currentPage4,this.pageSize)
 			},
 			selectpageimg(pageNum,pageSize){
+				let loadingInstance = Loading.service();
 				let pageRequest={};
 				
 				pageRequest.pageSize=pageSize;
 				pageRequest.pageNum=pageNum;
 				console.log(pageRequest)
 				selectPagePhoto(JSON.stringify(pageRequest)).then(res=>{
-					console.log(res)
+					loadingInstance.close();
 					
 					let data=res.data.data;
 					this.imgcontent=data.content;

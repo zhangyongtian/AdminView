@@ -62,7 +62,7 @@
 		},
 		methods:{
 			gotoregister(){
-				this.$router.push("/loginandsign/register")
+				alert("zhangyongtianaa@sina.com发邮件给他吧")
 			},
 			submitForm(formName) {
 				this.$refs[formName].validate((valid) => {
@@ -78,19 +78,25 @@
 					user.siginType=siginType;
 					loginrequest(JSON.stringify(user))
 					.then(res=>{
-						console.log(res)
-						 this.$message({
-						    message: '登录成功',
-						    type: 'success'
-						});
-						let loginuser=res.data.data.useryonghu;
-						let token=res.data.data.token;
-						//登录成功以后吧信息保存到本地
-						window.localStorage.setItem("remebermeadmin",JSON.stringify(loginuser));
-						window.localStorage.setItem("remembermetoken",token);
-						this.$store.dispatch("saveUser",loginuser)
-						this.loginload=false;
-						this.$router.push("/admin")
+						if(res.data.status==500){
+							this.$message({
+							    message: '用户名或密码错误',
+							    type: 'error'
+							});
+						}else{
+							 this.$message({
+							    message: '登录成功',
+							    type: 'success'
+							});
+							let loginuser=res.data.data.useryonghu;
+							let token=res.data.data.token;
+							//登录成功以后吧信息保存到本地
+							window.localStorage.setItem("remebermeadmin",JSON.stringify(loginuser));
+							window.localStorage.setItem("remembermetoken",token);
+							this.$store.dispatch("saveUser",loginuser)
+							this.loginload=false;
+							this.$router.push("/admin")
+						}
 					})
 					.catch(error=>{
 						this.loginload=false;

@@ -16,6 +16,7 @@ const alibabafilerequestimp=data=>{
 const filegetprotiy=data=>{
 	return alibabafilerequest({
 		method:"GET",
+				// url:"http://49.235.236.99:8089/rememberme/ossFileUpload",
 		url:"http://localhost:8089/rememberme/ossFileUpload",
 		data
 	})

@@ -84,41 +84,49 @@ export default {
 							 }
 							// const fd=new FormData();    //定义一个formdata用来存储文件，用于文件的上传
 							
-							return 	ossfileupload().then(response=>{
-								console.log("==========")
-								console.log(response.data)
-									policy.policy = response.data.policy;
-									policy.signature = response.data.signature;
-									policy.ossaccessKeyId = response.data.accessid;
-									policy.key = response.data.dir +getUUID()+'_${filename}';
-									policy.dir = response.data.dir;
-									policy.host = response.data.host;
-									// _self.dataObj.policy = response.data.policy;
-									// _self.dataObj.signature = response.data.signature;
-									// _self.dataObj.ossaccessKeyId = response.data.accessid;
-									// _self.dataObj.key = response.data.dir +this.getUUID()+'_${filename}';
-									// _self.dataObj.dir = response.data.dir;
-									// _self.dataObj.host = response.data.host;
-									fd.append("policy",policy.policy);
-									fd.append("signature",policy.signature);
-									fd.append("key",policy.key);
-									fd.append("ossaccessKeyId",policy.ossaccessKeyId);
-									fd.append("dir",policy.dir);
-									fd.append("host",policy.host);
-									fd.append("file",file);
-									console.log(policy)
-									
-								  alibabafilerequestimp(fd).then(res=>{
-										console.log("发客户的反馈")
-									})
-									url=policy.host + '/' + policy.key.replace("${filename}",file.name);
-									let urltemp=url;
-									return urltemp;
-								})
-							// return alibabafilerequestimp(fd).then(res=>{
-							// console.log("我过劳了")
-							// return "https://www.baidu.com/img/flexible/logo/pc/result.png";
-						// })
+							
+							// return uploadFileRequest(fd).then(res=>{
+							// 	return res.data.data;
+							// })
+							// console.log("我是")
+							// console.log(ossfileupload);
+							// console.log("结果")
+							// console.log(uploadFileRequest)
+							// return 	ossfileupload().then(response=>{
+							// 	console.log("过来了吗")
+							// 	return response.data.data;
+							// })
+							
+							 return 	ossfileupload().then(response=>{
+							 		policy.policy = response.data.policy;
+							 		policy.signature = response.data.signature;
+							 		policy.ossaccessKeyId = response.data.accessid;
+							 		policy.key = response.data.dir +getUUID()+'_${filename}';
+							 		policy.dir = response.data.dir;
+							 		policy.host = response.data.host;
+							 		// _self.dataObj.policy = response.data.policy;
+							 		// _self.dataObj.signature = response.data.signature;
+							 		// _self.dataObj.ossaccessKeyId = response.data.accessid;
+							 		// _self.dataObj.key = response.data.dir +this.getUUID()+'_${filename}';
+							 		// _self.dataObj.dir = response.data.dir;
+							 		// _self.dataObj.host = response.data.host;
+							 		fd.append("policy",policy.policy);
+							 		fd.append("signature",policy.signature);
+						 		fd.append("key",policy.key);
+							 		fd.append("ossaccessKeyId",policy.ossaccessKeyId);
+							 		fd.append("dir",policy.dir);
+							 		fd.append("host",policy.host);
+							 		fd.append("file",file);
+							 	  alibabafilerequestimp(fd).then(res=>{
+							 		})
+							 		url=policy.host + '/' + policy.key.replace("${filename}",file.name);
+							 		let urltemp=url;
+							 		return urltemp;
+							 	})
+						 // 	return alibabafilerequestimp(fd).then(res=>{
+						 // 	console.log("我过劳了")
+						 // 	return "https://www.baidu.com/img/flexible/logo/pc/result.png";
+						 // })
 						
 							// return new Promise((resolvt,reject)=>{
 							// 	ossfileupload().then(response=>{
@@ -141,16 +149,16 @@ export default {
 							// 	console.log("调用了了")
 							// return url;
 							// })
-						 	// ossfileupload().then(response=>{
-								// 			let url="";
-								// 		  
-								// 		  alibabafilerequestimp(fd).then(res=>{
-								// 			url=policy.host + '/' + policy.key.replace("${filename}",file.name);
-								// 		}).then(res=>{
-								// 			
-								// 		})
-								// return url;		
-							 // })
+						 // 	ossfileupload().then(response=>{
+							// 				let url="";
+							// 			  
+							// 			  alibabafilerequestimp(fd).then(res=>{
+							// 				url=policy.host + '/' + policy.key.replace("${filename}",file.name);
+							// 			}).then(res=>{
+							// 				
+							// 			})
+							// 	return url;		
+							//  })
 						}
 					}),
 					// new Iframe(),

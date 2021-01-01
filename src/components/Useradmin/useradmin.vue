@@ -48,6 +48,7 @@
 	import {userAdminPage} from '@/util/requestnetwork/userAdminRequest'
 	import {deleteUserById} from '@/util/requestnetwork/userAdminRequest'
 	import useritem from '@/components/Useradmin/useritem'
+	import { Loading } from 'element-ui';
 	export default{
 		name:"useradmin",
 		methods: {
@@ -128,9 +129,10 @@
 			let pageRequest={};
 			pageRequest.pageNum=this.currentPage4;
 			pageRequest.pageSize=this.pageSize;
+			let loadingInstance = Loading.service();
 			userAdminPage(JSON.stringify(pageRequest)).then(res=>{
 				let data=res.data.data;
-				console.log(res)
+				loadingInstance.close();
 				this.currentPage4=data.pageNum;
 				this.pageSize=data.pageSize;
 				this.totalSize=data.totalSize;

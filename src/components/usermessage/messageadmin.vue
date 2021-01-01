@@ -47,6 +47,8 @@
 	import {selectMessagePage} from "@/util/requestnetwork/messagerequest"
 	import {deletemessageById} from "@/util/requestnetwork/messagerequest"
 	
+	import { Loading } from 'element-ui';
+	
 	export default{
 		name:"messageadmin",
 		components: {
@@ -62,18 +64,18 @@
        this.getmessage(this.currentPage4,this.pageSize,this.user.id);
       },
 	  getmessage(pageNum,pageSize,userid){
+		  let loadingInstance = Loading.service();
 		  let pageRequest={};
 		  pageRequest.pageNum=pageNum;
 		  pageRequest.pageSize=pageSize;
 		  pageRequest.userid=userid;
 		  selectMessagePage(JSON.stringify(pageRequest)).then(res=>{
-		  	console.log("结果")
-		  	console.log(res)
 		  	let data=res.data.data;
 		  	this.currentPage4=data.pageNum;
 		  	this.pageSize=data.pageSize;
 		  	this.total=data.totalSize;
 		  	this.message=data.content
+			loadingInstance.close();
 		  }).catch(error=>{
 		  	
 		  })

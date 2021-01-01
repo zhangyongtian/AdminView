@@ -32,6 +32,7 @@
 	
 	import {getAticleAdminPage} from '@/util/requestnetwork/userAticleAmin.js'
 	import {deleteBlogById} from '@/util/requestnetwork/userAticleAmin.js'
+	import { Loading } from 'element-ui';
 	
 	export default{
 		name:"userAticle",
@@ -112,9 +113,11 @@
 		let pageRequest={};
 		pageRequest.pageNum=this.currentPage4;
 		pageRequest.pageSize=this.pageSize;
+		let loadingInstance = Loading.service();
 		getAticleAdminPage(JSON.stringify(pageRequest)).then(res=>{
+			console.log(res)
 			let data=res.data.data;
-			console.log(data)
+			loadingInstance.close();
 			this.pageSize=data.pageSize;
 			this.currentPage4=data.pageNum;
 			this.total=data.totalSize;

@@ -47,15 +47,12 @@
 		successUpload(response, file, fileList){
 			this.fileList.pop();
 			this.fileList.push({name: file.name, url: this.dataObj.host + '/' + this.dataObj.key.replace("${filename}",file.name) });
-			console.log("最后的文件地址是"+this.fileList[0].url)
 			this.$emit("getheadimg",this.fileList[0].url);
 		},
 		beforeUpload(file) {
 		  let _self = this;
 		  return new Promise((resolve,reject)=>{
 			  ossfileupload().then(response=>{
-			  			  console.log("紫红色哥是")
-			  			  console.log(response.data)
 			  			  _self.dataObj.policy = response.data.policy;
 			  			  _self.dataObj.signature = response.data.signature;
 			  			  _self.dataObj.ossaccessKeyId = response.data.accessid;

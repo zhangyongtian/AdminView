@@ -74,6 +74,7 @@
 <script>
 	import {parenetpagecomment} from "@/util/requestnetwork/parenetpagecomment"
 	import {deleteparentcomment} from "@/util/requestnetwork/parenetpagecomment"
+	import { Loading } from 'element-ui';
 	
 	import {soncommentRequest} from "@/util/requestnetwork/soncommentRequest"
 	import {deletesoncomment} from "@/util/requestnetwork/soncommentRequest"
@@ -107,19 +108,20 @@
 				this.getsonComments(this.soncomments.pageNum,this.soncomments.pageSize,user)
 			},
 			getComments(pageNum,pageSize,user){
+				let loadingInstance = Loading.service();
 				let pagerequest={};
 				pagerequest.pageNum=pageNum;
 				pagerequest.pageSize=pageSize;
 				pagerequest.userid=JSON.parse(user).id;
 				parenetpagecomment(JSON.stringify(pagerequest)).then(res=>{
-					console.log(res)
 					let data=res.data.data;
 					this.currentPage4=data.pageNum;
 					this.pagesize=data.pageSize;
 					this.totalsize=data.totalSize;
 					this.parentcomments=data.content;
+					loadingInstance.close();
 				}).catch(error=>{
-					console.log("获取父评论失败")
+
 				})
 			},
 			getsonComments(pageNum,pageSize,user){
@@ -129,14 +131,11 @@
 				pagerequest.userid=JSON.parse(user).id;
 				soncommentRequest(JSON.stringify(pagerequest)).then(res=>{
 					this.soncomments=res.data.data;
-					console.log("打印子组件的内容");
-					console.log(this.soncomments)
 				}).catch(error=>{
-					console.log("获取父评论失败")
+					
 				})
 			},
 			deleteCommentByItem(commentitem,commentId){
-				console.log(this.tabnum)
 				// 点击的时候获取到删除的item还有id,先保存起来,然后用模态点击确认的时候然后在调用删除函数
 				if(this.tabnum==0){
 					this.commentitem=commentitem;
@@ -181,7 +180,6 @@
 					//console.log("这里是父评论的内容")
 					this.tabnum=tab.paneName;
 				}else if(tab.paneName==1){
-					console.log("这里是子评论的内容");
 					this.tabnum=tab.paneName;
 					
 				}

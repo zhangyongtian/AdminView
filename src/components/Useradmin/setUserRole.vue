@@ -55,6 +55,8 @@
 	import {getUserById} from '@/util/requestnetwork/userAdminRequest'
 	import {getAllRole} from '@/util/requestnetwork/userAdminRequest'
 	import {updateUserRoles} from '@/util/requestnetwork/userAdminRequest'
+	import {getUserAllRole} from '@/util/requestnetwork/userAdminRequest'
+	
 	
 	
 	export default{
@@ -77,22 +79,31 @@
 				this.user=res.data.data;
 				
 				// 下面是获取所有的角色
-				getAllRole().then(res=>{
+				getUserAllRole(JSON.stringify(user)).then(res=>{
 					//下面是所有的角色
 					let data=res.data.data;
+					console.log(res)
 					this.allRole=data;
 					this.userHasRoleId=this.user.roles.map(role=>{
 						return role.roleid
 					})
-					this.userNotHaveRoleRole=this.allRole.filter(role=>{
-						return this.userHasRoleId.indexOf(role.roleid)<0;
+					console.log("下面是获取所有的角色")
+					getAllRole().then(res=>{
+						let data=res.data.data;
+						this.allRole=data;
+						this.userNotHaveRoleRole=this.allRole.filter(role=>{
+							return this.userHasRoleId.indexOf(role.roleid)<0;
+						})
 					})
+					
 				}).catch(error=>{
 					
 				})
 			}).catch(error=>{
 				
 			})
+			
+			
 			
 			
 		},
@@ -102,7 +113,6 @@
 				this.userNotHaveRoleRole.push(item);
 			},
 			addRole(item){
-				console.log("你现在要添加角色")
 				this.deleteSelfRole(this.userNotHaveRoleRole,item);
 				this.user.roles.push(item)
 			},

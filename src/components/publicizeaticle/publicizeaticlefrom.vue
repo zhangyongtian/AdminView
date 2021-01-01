@@ -41,7 +41,7 @@
 		   <richeditt v-on:richdietcontenchange="richcontetchange" ></richeditt>
 		  </el-form-item>
 		  <el-form-item>
-		    <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
+		    <el-button type="primary" @click="submitForm('ruleForm')"  :loading="subminload">立即创建</el-button>
 		    <el-button @click="resetForm('ruleForm')">重置</el-button>
 		  </el-form-item>
 		</el-form>
@@ -63,6 +63,7 @@
 		},
 		data() {
 		      return {
+						subminload:false,
 						blogtags:[],
 						blogclassfiy:[],
 		        ruleForm: {
@@ -101,8 +102,10 @@
 		    },
 		    methods: {
 		      submitForm(formName) {
+						
 		        this.$refs[formName].validate((valid) => {
 		          if (valid) {
+								this.subminload=true;
 		            //这里是提交数据
 								let blogresult={};
 								blogresult.userid=this.$store.state.user.id;
@@ -113,10 +116,9 @@
 								blogresult.isfabu=this.ruleForm.isfabu?1:0;
 								blogresult.introduce=this.ruleForm.introduce;
 								blogresult.content=this.ruleForm.content;
-								console.log(JSON.stringify(blogresult));
 								saveBlog(JSON.stringify(blogresult)).then(res=>{
-									console.log(res);
 									if(res.data.status==200){
+										this.subminload=false;
 										this.$message({
 											showClose: true,
 											message: '发表文章成功',

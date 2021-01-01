@@ -34,6 +34,8 @@
 	import {getAllcomment} from '@/util/requestnetwork/commendadmin'
 	import {deletecommentById} from '@/util/requestnetwork/commendadmin'
 	
+	import { Loading } from 'element-ui';
+	
 	export default{
 		name:"commentadmin",
 		components:{
@@ -112,9 +114,10 @@
 			let pageRequest={};
 			pageRequest.pageSize=this.pageSize;
 			pageRequest.pageNum=this.currentPage4;
+			let loadingInstance = Loading.service();
 			getAllcomment(JSON.stringify(pageRequest)).then(res=>{
 				let data=res.data.data;
-				console.log(data)
+				loadingInstance.close();
 				this.comments=data.content;
 				this.pageSize=data.pageSize;
 				this.pageNum=data.pageNum;

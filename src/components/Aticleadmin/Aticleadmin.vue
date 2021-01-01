@@ -41,6 +41,8 @@
 	import {deleteblogById} from "@/util/requestnetwork/aticlerequest"
 	import aticleform from '@/components/Aticleadmin/aticleselectfrom.vue'
 	import aticletable from '@/components/Aticleadmin/aticletable.vue'
+	
+	import { Loading } from 'element-ui';
 	export default{
 		name:"aticleadmin",
 		components:{
@@ -59,6 +61,7 @@
 						this.getpages(this.currentPage4,this.pagesize,user);
 		      },
 					getpages(pageNum,pageSize,user){
+						let loadingInstance = Loading.service();
 						let pagerequest={};
 					pagerequest.pageNum=pageNum;
 					pagerequest.pageSize=pageSize;
@@ -72,7 +75,7 @@
 						this.pagesize=data.pageSize;
 						this.totalsize=data.totalSize;
 						this.blogs=data.content;
-						console.log(this.blogs)
+						loadingInstance.close();
 					}).catch(error=>{
 						
 					})

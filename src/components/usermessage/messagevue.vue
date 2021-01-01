@@ -12,7 +12,7 @@
 					<el-input type="textarea" v-model="ruleForm.desc" maxlength="200" placeholder="最多200个字符" style="height: 500px;"></el-input>
 				</el-form-item>
 			<el-form-item>
-				<el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
+				<el-button type="primary" @click="submitForm('ruleForm')" :loading="creatememssage">立即创建</el-button>
 				<el-button @click="resetForm('ruleForm')">重置</el-button>
 			</el-form-item>
 			</el-form>
@@ -25,6 +25,7 @@
   export default {
     data() {
       return {
+				creatememssage:false,
         ruleForm: {
           desc: ''
         },
@@ -39,12 +40,13 @@
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
+						this.creatememssage=true;
             let message={};
 			let user=this.$store.state.user;
 			message.userid=user.id;
 			message.message=this.ruleForm.desc;
 			savemessage(JSON.stringify(message)).then(res=>{
-				console.log(res);
+				this.creatememssage=false;
 				this.$message({
 				showClose: true,
 				message: '恭喜你，发布留言成功',

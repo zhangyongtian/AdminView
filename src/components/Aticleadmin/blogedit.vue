@@ -62,7 +62,7 @@
 		   <richeditt @richdietcontenchange="richcontetchange"></richeditt>
 		  </el-form-item>
 		  <el-form-item>
-		    <el-button type="primary" @click="submitForm('ruleForm')">修改</el-button>
+		    <el-button type="primary" @click="submitForm('ruleForm')" :loading="updatei">修改</el-button>
 		    <el-button @click="resetForm('ruleForm')">重置</el-button>
 		  </el-form-item>
 		</el-form>
@@ -94,6 +94,7 @@
 		},
 		data() {
 		      return {
+				  updatei:false,
 				  dialogVisible:false,
 				  //这个是图像处理的那个duixian
 				  
@@ -140,6 +141,7 @@
 		      submitForm(formName) {
 		        this.$refs[formName].validate((valid) => {
 		          if (valid) {
+					  this.updatei=true;
 		            //这里是提交数据
 								let blogresult={};
 								blogresult.userid=this.$store.state.user.id;
@@ -153,7 +155,7 @@
 								blogresult.id=this.$route.params.blogid;
 								console.log(JSON.stringify(blogresult));
 								updateblog(JSON.stringify(blogresult)).then(res=>{
-									console.log(res);
+									this.updatei=false;
 									if(res.data.status==200){
 										this.$message({
 											showClose: true,

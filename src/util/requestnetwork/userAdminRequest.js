@@ -39,4 +39,12 @@ const updateUserRoles=data=>{
 		data
 	})
 }
-export {userAdminPage,deleteUserById,getUserById,getAllRole,updateUserRoles}
+
+const getUserAllRole=data=>{
+	return request({
+		method:"POST",
+		url:"/rememberme/admin/getUserAllRole",
+		data
+	})
+}
+export {userAdminPage,deleteUserById,getUserById,getAllRole,updateUserRoles,getUserAllRole}
